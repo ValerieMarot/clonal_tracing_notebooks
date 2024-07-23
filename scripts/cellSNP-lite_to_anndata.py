@@ -1,6 +1,3 @@
-# call with:
-# python preproc.py -d path_to_cellsnp-lite-output_dir
-
 import sys
 import pandas as pd 
 import anndata
