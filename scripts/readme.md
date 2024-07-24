@@ -111,7 +111,7 @@ With ```dir``` the directory in which the output anndata objects are found, and 
 
 To learn more about the run parameters, please run:
 ```
-python run_wNMF.py -h
+python select_and_annotate.py -h
 ```
 Editable run options are:
 - ```-ct```: Provide optional path to the list of cell type labels. We assume the first collumn to be the cell names as saved in the adata.obs_names, and the second column a list of cell types.
