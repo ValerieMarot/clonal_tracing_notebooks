@@ -94,8 +94,8 @@ if "celltype" in adata.obs.columns and ((healthy_ct is not None) or (cancer_ct i
         else:
             labels[cancer_factors]="cancer"
             labels[healthy_factors]="healthy"
-            print("Labeling factors "+ str(np.where(cancer_factors)[0]) + " as cancer.")
-            print("Labeling factors "+ str(np.where(healthy_factors)[0]) + " as healthy.")
+            print("Labeling factors "+ str(np.where(cancer_factors)[0]) + " as cancer. (" +str(np.round(n_cells_cancer,2))+" percent cancer cells in the factors.)")
+            print("Labeling factors "+ str(np.where(healthy_factors)[0]) + " as healthy. (" +str(np.round(n_cells_healthy,2))+" percent healthy cells in the factors.)")
         idx = np.any((~cancer_factors) & (~healthy_factors))
         if np.any(idx):
             print("Factor(s) "+ str(np.where(idx)[0]) + " contain neither healthy nor cancer cell types. Labeling as ambiguous.")
@@ -103,14 +103,14 @@ if "celltype" in adata.obs.columns and ((healthy_ct is not None) or (cancer_ct i
         cancer_factors = (n_cells_cancer>threshold)
         labels[cancer_factors]="cancer"
         labels[~cancer_factors]="healthy"
-        print("Labeling factors "+ str(np.where(cancer_factors)[0]) + " as cancer.")
+        print("Labeling factors "+ str(np.where(cancer_factors)[0]) + " as cancer. (" +str(np.round(n_cells_cancer,2))+" percent cancer cells in the factors.)")
         print("Labeling factors "+ str(np.where(~cancer_factors)[0]) + " as healthy.")
     elif n_cells_healthy is not None:
         healthy_factors = (n_cells_healthy>threshold)
         labels[healthy_factors]="healthy"
         labels[~healthy_factors]="cancer"
         print("Labeling factors "+ str(np.where(~healthy_factors)[0]) + " as cancer.")
-        print("Labeling factors "+ str(np.where(healthy_factors)[0]) + " as healthy.")
+        print("Labeling factors "+ str(np.where(healthy_factors)[0]) + " as healthy. (" +str(np.round(n_cells_healthy,2))+" percent healthy cells in the factors.)")
 
     if np.any(labels=="healthy") & np.any(labels=="cancer"): # SUCCESS
         print("wNMF validation and factor labeling SUCCESS. Saving the labels to adata object.")
@@ -122,7 +122,6 @@ if "celltype" in adata.obs.columns and ((healthy_ct is not None) or (cancer_ct i
         cell_labels = np.repeat("undetermined", adata.shape[0])
         cell_labels[(conf>Cdiff_sub_cells) & (cancer>healthy)] = "cancer"
         cell_labels[(conf>Cdiff_sub_cells) & (cancer<healthy)] = "healthy"
-        print(cell_labels)
         adata.obs["cell_labels"]=cell_labels
         adata.obs["cancer_weight"]=cancer
         adata.obs["healthy_weight"]=healthy
